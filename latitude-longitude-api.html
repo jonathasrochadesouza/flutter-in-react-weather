@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Latitude e Longitude</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+        label, input, button { display: block; margin: 10px 0; }
+        #resultado { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Buscar Latitude e Longitude</h2>
+    <label>Cidade:</label>
+    <input id="cidade" type="text" placeholder="Ex: Blumenau">
+    <label>Estado:</label>
+    <input id="estado" type="text" placeholder="Ex: SC">
+    <button onclick="buscar()">Buscar</button>
+    <div id="resultado"></div>
+
+    <script>
+        function buscar() {
+            const cidade = document.getElementById('cidade').value;
+            const estado = document.getElementById('estado').value;
+            const endereco = `${cidade}, ${estado}, Brasil`;
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(endereco)}&format=json&limit=1`;
+
+            fetch(url, {
+                headers: {
+                    'User-Agent': 'Jonathas (Personal)' // Nominatim requer User-Agent
+                }
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if(data.length > 0) {
+                        const location = data[0];
+                        document.getElementById('resultado').innerHTML =
+                            `<strong>Latitude:</strong> ${location.lat}<br>
+                             <strong>Longitude:</strong> ${location.lon}`;
+                    } else {
+                        document.getElementById('resultado').innerHTML = "Localização não encontrada.";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('resultado').innerHTML = "Erro ao buscar localização.";
+                    console.error('Erro:', error);
+                });
+        }
+    </script>
+</body>
+</html>
