@@ -1,104 +1,315 @@
-# Weather Project - React Native + Flutter Integration
+# 🌦️ Flutter in React Native - Hybrid Weather App
 
-## Sumário
+<div align="center">
+  <img src="./assets_readme/senior-hybrid-project-cover.png" alt="Project Cover" width="800"/>
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![React Native](https://img.shields.io/badge/React%20Native-0.71.8-blue.svg)](https://reactnative.dev/)
+  [![Flutter](https://img.shields.io/badge/Flutter-3.1.0+-02569B.svg)](https://flutter.dev/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-4.5.2-blue)](https://www.typescriptlang.org/)
+</div>
 
-- [Resumo do Projeto](#resumo-do-projeto)
-- [Arquitetura do Projeto](#arquitetura-do-projeto)
-- [Design das Telas](#design-das-telas)
-- [Como Usar a API do Clima (OpenWeatherMap via RapidAPI)](#como-usar-a-api-do-clima-openweathermap-via-rapidapi)
-    - [Decifrando a resposta da API](#decifrando-a-resposta-da-api)
-    - [Exemplo de requisição](#exemplo-de-requisição)
-- [Como executar o projeto](#como-executar-o-projeto)
-- [Licença](#licença)
+## 📑 Sumário
 
-***
+- [Sobre o Projeto](#-sobre-o-projeto)
+- [Arquitetura](#-arquitetura)
+- [Tecnologias](#-tecnologias)
+- [Pré-requisitos](#-pré-requisitos)
+- [Instalação](#-instalação)
+- [Como Usar](#-como-usar)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Scripts Disponíveis](#-scripts-disponíveis)
+- [Desenvolvimento](#-desenvolvimento)
+- [Contribuindo](#-contribuindo)
+- [Licença](#-licença)
 
-## Resumo do Projeto
+## 📖 Documentação Adicional
 
-Este projeto é um aplicativo mobile híbrido que utiliza **React Native** e **Flutter** para construir uma experiência de previsão do tempo moderna e prática. A aplicação permite consultar condições climáticas de cidades brasileiras, utilizando a API OpenWeatherMap integrada via RapidAPI. A interface segue padrões modernos e foi prototipada no Figma.
+- **[⚡ Quick Start](QUICKSTART.md)** - Comece rapidamente em 5 minutos
+- **[Guia de Instalação Completo](INSTALLATION.md)** - Setup detalhado do ambiente
+- **[Arquitetura Detalhada](ARCHITECTURE.md)** - Design e padrões do projeto
+- **[Changelog](CHANGELOG.md)** - Histórico de versões e mudanças
+- **[Segurança](SECURITY.md)** - Políticas e práticas de segurança
+- **[Contribuindo](CONTRIBUTING.md)** - Como contribuir com o projeto
+- **[Código de Conduta](CODE_OF_CONDUCT.md)** - Regras da comunidade
 
-***
+## 🎯 Sobre o Projeto
 
-## Arquitetura do Projeto
+Projeto de desenvolvimento híbrido que demonstra a integração de **Flutter** dentro de uma aplicação **React Native**. Este SDK permite incorporar módulos Flutter em apps React Native, possibilitando aproveitar o melhor dos dois mundos.
 
-- **Frontend:** React Native integrado com Flutter (utilizando o pacote para integração em RN).
-- **API:** OpenWeatherMap (consumida via RapidAPI para facilitar autenticação e quotas).
-- **Geolocalização:** Busca de latitude/longitude utilizando Nominatim (OpenStreetMap).
-- **Design das Telas:** Disponível no Figma.
+### ✨ Principais Recursos
 
-***
+- 🔄 Integração nativa entre React Native e Flutter
+- 📱 Suporte para iOS e Android
+- 🎨 Interface moderna e responsiva
+- 🌐 Gerenciamento de estado com Provider (Flutter)
+- 💾 Persistência local com Hive
+- 🔌 Comunicação bidirecional entre as plataformas
 
-## Design das Telas
+## 🏗️ Arquitetura
 
-A prototipação pode ser acessada diretamente pelo link do Figma (requer login):  
-https://www.figma.com/design/1yTP30oxJVsDBqKA3DhSkn/React---Flutter--Weather-?node-id=0-1
-
-***
-
-## Como Usar a API do Clima (OpenWeatherMap via RapidAPI)
-
-### Passo 1 - Configurar RapidAPI
-
-- Acesse [RapidAPI](https://rapidapi.com/) e busque por "OpenWeatherMap".
-- Assine o plano desejado e obtenha sua API Key da plataforma RapidAPI.
-
-### Passo 2 - Consumir a API
-
-Utilize o endpoint de previsão de 5 dias (`/forecast`) passando as coordenadas obtidas com Nominatim (latitude e longitude).
-
-**Exemplo de chamada via fetch:**  
-```javascript
-const url = 'https://open-weather13.p.rapidapi.com/city/latlon?lat={LAT}&lon={LON}';
-fetch(url, {
-  headers: {
-    'X-RapidAPI-Key': 'YOUR_RAPIDAPI_KEY',
-    'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
-  }
-})
-.then(r => r.json())
-.then(data => {
-  // Utilize o método abaixo para decifrar o JSON!
-});
+```
+┌─────────────────────────────────────────┐
+│         React Native App                │
+│  ┌───────────────────────────────────┐  │
+│  │      JavaScript/TypeScript        │  │
+│  │                                   │  │
+│  │  ┌─────────────────────────────┐  │  │
+│  │  │   Native Bridge Layer       │  │  │
+│  │  │   (iOS Swift / Android)     │  │  │
+│  │  └─────────────────────────────┘  │  │
+│  │              ↕                    │  │
+│  │  ┌─────────────────────────────┐  │  │
+│  │  │   Flutter Module Engine     │  │  │
+│  │  │   (Dart + Flutter Widgets)  │  │  │
+│  │  └─────────────────────────────┘  │  │
+│  └───────────────────────────────────┘  │
+└─────────────────────────────────────────┘
 ```
 
-### Decifrando a resposta da API
+### Fluxo de Comunicação
 
-A resposta é um JSON extenso, com previsões a cada 3 horas para os próximos 5 dias.
+1. **React Native** → Native Module → **Flutter Engine**
+2. Flutter renderiza suas views nativamente
+3. **Flutter** → Event Channels → **React Native**
 
-Principais campos:
-- `"cod"`: Status da API (200 = sucesso)
-- `"cnt"`: Número de previsões retornadas (normalmente 40)
-- `"list"`: Array principal de previsões (cada item = 3h)
-  - `main.temp`: Temperatura (Kelvin, converter: **°C = K - 273.15**)
-  - `main.feels_like`: Sensação térmica (Kelvin)
-  - `main.humidity`: Umidade relativa (%)
-  - `weather[0].main`: Condição geral (Clouds, Rain etc)
-  - `weather[0].description`: Descrição detalhada
-  - `rain.3h`: Volume de chuva nas últimas 3h (se presente)
-  - `dt_txt`: Data/hora da previsão (legível)
-- `"city"`: Informações sobre a cidade (nome, coordenadas, população etc)
+## 🛠️ Tecnologias
 
-Exemplo de como extrair temperatura para exibir:
-```javascript
-const previsoes = data.list.map(item => ({
-  horario: item.dt_txt,
-  descricao: item.weather[0].description,
-  temperatura: (item.main.temp - 273.15).toFixed(1) + '°C',
-  chuva: item.rain?.['3h'] || 0
-}));
+### React Native
+- **React Native** 0.71.8
+- **TypeScript** 4.5.2
+- **React** 18.2.0
+- React Native Builder Bob
+
+### Flutter
+- **Flutter SDK** 3.1.0+
+- **Dart** 3.1.0+
+- **Provider** (State Management)
+- **Hive** (Local Storage)
+- **HTTP** (Networking)
+
+### Ferramentas
+- Yarn 1.22.15
+- CocoaPods (iOS)
+- Gradle (Android)
+- Lefthook (Git Hooks)
+- Jest (Testing)
+- ESLint + Prettier
+
+## 📋 Pré-requisitos
+
+### Sistema Operacional
+- macOS (para desenvolvimento iOS)
+- Linux ou Windows (para desenvolvimento Android)
+
+### Ambiente React Native
+- **Node.js** >= 16.0.0
+- **Yarn** >= 1.22.15
+- **Watchman** (recomendado)
+- **JDK** 11 ou superior
+
+### Ambiente Flutter
+- **Flutter SDK** >= 3.1.0
+- **Dart SDK** >= 3.1.0
+
+### iOS
+- **Xcode** >= 14.0
+- **CocoaPods** >= 1.11.0
+- iOS Simulator ou dispositivo físico
+
+### Android
+- **Android Studio** (ou Android SDK CLI tools)
+- **Android SDK** >= 31
+- Android Emulator ou dispositivo físico
+
+## 🚀 Instalação
+
+### 1. Clone o Repositório
+
+```bash
+git clone https://github.com/KPS250/desenvolvimento-hibrido.git
+cd desenvolvimento-hibrido
 ```
 
-***
+### 2. Instale as Dependências
 
-## Como executar o projeto
+#### Dependências do Projeto Principal
+```bash
+yarn install
+```
 
-1. Instale dependências com o gerenciador de pacotes do React Native e Flutter.
-2. Configure sua chave da RapidAPI em um arquivo de variáveis de ambiente.
-3. Execute o app no simulador/emulador desejado.
-4. Utilize o campo de busca para selecionar cidade/estado, obtenha as coordenadas e visualize a previsão do tempo nas telas seguindo o Figma.
+#### Dependências do Exemplo
+```bash
+cd example
+yarn install
+```
 
-***
+#### Dependências do Flutter Module
+```bash
+cd ../rn_flutter_sdk
+flutter pub get
+```
 
-## Licença
+### 3. Instale as Dependências Nativas
 
-MIT - Sinta-se livre para usar e modificar!
+#### iOS
+```bash
+cd ../example/ios
+pod install
+cd ../..
+```
+
+#### Android
+As dependências Android são instaladas automaticamente durante o build.
+
+### 4. (Opcional) Use o Script Bootstrap
+
+```bash
+# Na raiz do projeto
+yarn bootstrap
+```
+
+## 💻 Como Usar
+
+### Executar o Exemplo - Android
+
+```bash
+# Opção 1: Via yarn
+cd example
+yarn android
+
+# Opção 2: Via script
+chmod +x example/run_android.sh
+./example/run_android.sh
+```
+
+### Executar o Exemplo - iOS
+
+```bash
+cd example
+yarn ios
+```
+
+### Desenvolvimento com Hot Reload
+
+```bash
+# Terminal 1 - Metro Bundler
+cd example
+yarn start
+
+# Terminal 2 - App
+yarn android  # ou yarn ios
+```
+
+## 📁 Estrutura do Projeto
+
+```
+desenvolvimento-hibrido/
+├── android/                    # Código nativo Android do módulo
+│   └── src/main/
+├── ios/                        # Código nativo iOS do módulo
+├── src/                        # Código TypeScript do SDK
+│   ├── index.tsx              # Ponto de entrada principal
+│   └── NativeRnLoginSdk.ts    # Bridge nativo
+├── rn_flutter_sdk/            # Módulo Flutter
+│   ├── lib/
+│   │   ├── main.dart          # Entry point Flutter
+│   │   ├── models/            # Modelos de dados
+│   │   ├── provider/          # Estado global
+│   │   ├── screens/           # Telas Flutter
+│   │   ├── services/          # Serviços (API, storage)
+│   │   └── widgets/           # Componentes reutilizáveis
+│   └── pubspec.yaml           # Dependências Flutter
+├── example/                   # Aplicação de exemplo
+│   ├── android/               # Build Android do exemplo
+│   ├── ios/                   # Build iOS do exemplo
+│   └── src/
+│       ├── App.tsx            # Componente principal
+│       └── components/        # Componentes React Native
+├── lib/                       # Saída compilada (gerado)
+└── scripts/                   # Scripts auxiliares
+```
+
+## 📜 Scripts Disponíveis
+
+### Projeto Principal
+
+```bash
+yarn test                  # Executar testes
+yarn typecheck            # Verificar tipos TypeScript
+yarn lint                 # Executar linter
+yarn clean                # Limpar builds
+yarn bootstrap            # Instalar todas as dependências
+yarn release              # Criar nova release
+```
+
+### Exemplo
+
+```bash
+yarn android              # Executar no Android
+yarn ios                  # Executar no iOS
+yarn start                # Iniciar Metro bundler
+yarn test                 # Executar testes
+```
+
+## 👨‍💻 Desenvolvimento
+
+### Adicionar Novas Funcionalidades
+
+1. **Módulo Flutter**: Adicione suas telas/lógica em `rn_flutter_sdk/lib/`
+2. **Bridge Nativo**: Atualize os arquivos em `android/` e `ios/`
+3. **TypeScript**: Exponha a API em `src/index.tsx`
+
+### Testar Mudanças
+
+```bash
+# Rebuild do módulo
+yarn prepack
+
+# Testar no exemplo
+cd example
+yarn start --reset-cache
+yarn android  # ou ios
+```
+
+### Debug
+
+#### React Native Debugger
+```bash
+# Shake o dispositivo/emulador
+# Selecione "Debug" no menu
+```
+
+#### Flutter DevTools
+```bash
+flutter pub global activate devtools
+flutter pub global run devtools
+```
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Por favor, leia [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre nosso código de conduta e processo de submissão de pull requests.
+
+### Passos para Contribuir
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+<div align="center">
+  
+  <img src="./assets_readme/flutter-dev-hiibrido.png" alt="Flutter Dev" width="200"/>
+  <img src="./assets_readme/reactn-dev-hiibrido.png" alt="React Native Dev" width="200"/>
+  
+  Feito com ❤️ por [KPS250](https://github.com/KPS250)
+  
+</div>
+

@@ -1,0 +1,61 @@
+# Desenvolvimento
+example/
+scripts/
+assets_readme/
+
+# Testes
+**/__tests__/
+**/__mocks__/
+**/__fixtures__/
+*.test.ts
+*.test.tsx
+*.test.js
+
+# Configuração
+.github/
+.vscode/
+.idea/
+lefthook.yml
+lefthook-local.yml
+.eslintrc*
+.prettierrc*
+.editorconfig
+tsconfig.json
+babel.config.js
+
+# Documentação (mantém só essenciais)
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+INSTALLATION.md
+CHANGELOG.md
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Build temporários
+*.log
+*.tgz
+.DS_Store
+
+# Android específicos para exemplo
+example/android/
+android/build/
+android/.gradle/
+android/.idea/
+
+# iOS específicos para exemplo
+example/ios/
+ios/build/
+
+# Node
+node_modules/
+yarn-error.log
+npm-debug.log
+
+# Flutter (módulo é necessário)
+rn_flutter_sdk/.dart_tool/
+rn_flutter_sdk/build/
+rn_flutter_sdk/test/
+
