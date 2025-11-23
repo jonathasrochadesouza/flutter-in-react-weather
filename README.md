@@ -127,7 +127,7 @@ Projeto de desenvolvimento híbrido que demonstra a integração de **Flutter** 
 ### 1. Clone o Repositório
 
 ```bash
-git clone https://github.com/KPS250/desenvolvimento-hibrido.git
+git clone https://github.com/jonathasrochadesouza/flutter-in-react-weather
 cd desenvolvimento-hibrido
 ```
 
@@ -173,13 +173,32 @@ yarn bootstrap
 
 ### Executar o Exemplo - Android
 
+#### Opção 1: Via Yarn (Mais Simples)
 ```bash
-# Opção 1: Via yarn
 cd example
 yarn android
+```
 
-# Opção 2: Via script
+#### Opção 2: Via Scripts (Controle Manual)
+
+**Terminal 1** - Iniciar Metro Bundler:
+```bash
+cd example
+yarn start
+```
+
+**Terminal 2** - Build e executar (em outro terminal):
+```bash
+cd example
+sh clean_android.sh    # Limpar build anterior
+sh run_android.sh      # Executar no Android
+```
+
+Ou com permissões de execução:
+```bash
+chmod +x example/clean_android.sh
 chmod +x example/run_android.sh
+./example/clean_android.sh
 ./example/run_android.sh
 ```
 
@@ -309,7 +328,7 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
   <img src="./assets_readme/flutter-dev-hiibrido.png" alt="Flutter Dev" width="200"/>
   <img src="./assets_readme/reactn-dev-hiibrido.png" alt="React Native Dev" width="200"/>
   
-  Feito com ❤️ por [KPS250](https://github.com/KPS250)
+  Feito com ❤️ por Jonathas Rocha
   
 </div>
 
